@@ -1,0 +1,1750 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="ISO"> <!-- Türkçe karakterler dahil tüm diller için en iyi seçimdir. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Benim İlk Web Sayfam</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Segoe+UI:wght@400;700&display=swap" rel="stylesheet"/>
+  <style>
+    /* CSS Değişkenleri - Karanlık Mod (Varsayılan) */
+    :root {
+      --bg-primary: #1a1a1a; /* Çok koyu gri arka plan */
+      --bg-secondary: #2a2a2a; /* Koyu gri (başlık, nav, içerik kutuları) */
+      --text-primary: #00e6e6; /* Siber-mavi (ana metin/başlıklar) */
+      --text-secondary: #e0e0e0; /* Açık gri (içerik paragrafları) */
+      --border-color: #00e6e6; /* Siber-mavi kenarlık */
+      --button-bg: #00b3b3; /* Koyu siber-mavi buton arka planı */
+      --button-text: #1a1a1a; /* Koyu gri buton metni */
+      --button-hover-bg: #00e6e6; /* Siber-mavi buton hover */
+      --shadow-color-light: rgba(0, 230, 230, 0.3); /* Hafif siber-mavi parlama */
+      --shadow-color-strong: rgba(0, 230, 230, 0.6); /* Güçlü siber-mavi parlama */
+      --input-bg: #3a3a3a; /* Orta koyu gri input */
+      --input-text: #00e6e6; /* Siber-mavi input metni */
+      --error-color: #ff3333; /* Dijital kırmızı */
+
+      /* Yeni Glitch Renkleri */
+      --glitch-color-1: #FF00FF; /* Parlak Macenta */
+      --glitch-color-2: #00FFFF; /* Parlak Camgöbeği */
+      --glitch-color-3: #00FF00; /* Parlak Yeşil */
+      --glitch-color-4: #FFFF00; /* Parlak Sarı */
+    }
+
+    /* Açık Mod */
+    body.light-mode {
+      --bg-primary: #f0f0f0; /* Açık gri arka plan */
+      --bg-secondary: #ffffff; /* Beyaz (başlık, nav, içerik kutuları) */
+      --text-primary: #008080; /* Koyu camgöbeği (ana metin/başlıklar) */
+      --text-secondary: #333333; /* Koyu gri (içerik paragrafları) */
+      --border-color: #008080; /* Koyu camgöbeği kenarlık */
+      --button-bg: #00cccc; /* Orta camgöbeği buton arka planı */
+      --button-text: #ffffff; /* Beyaz buton metni */
+      --button-hover-bg: #009999; /* Koyu camgöbeği buton hover */
+      --shadow-color-light: rgba(0, 204, 204, 0.3); /* Hafif camgöbeği parlama */
+      --shadow-color-strong: rgba(0, 204, 204, 0.6); /* Güçlü camgöbeği parlama */
+      --input-bg: #e0e0e0; /* Açık gri input */
+      --input-text: #333333; /* Koyu gri input metni */
+      --error-color: #cc0000; /* Koyu kırmızı */
+
+      /* Yeni Glitch Renkleri (Açık mod için ayarlanabilir) */
+      --glitch-color-1: #CC00CC; /* Daha Koyu Macenta */
+      --glitch-color-2: #00AAAA; /* Daha Koyu Camgöbeği */
+      --glitch-color-3: #00CC00; /* Daha Koyu Yeşil */
+      --glitch-color-4: #CCCC00; /* Daha Koyu Sarı */
+    }
+
+    body {
+      font-family: 'Segoe UI', 'Roboto', sans-serif; /* Modern, temiz font */
+      background-color: var(--bg-primary); /* Arka plan rengini değişkenden al */
+      background-size: cover;
+      background-position: center center;
+      background-attachment: fixed;
+      margin: 0;
+      padding: 0;
+      color: var(--text-primary);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      transition: background-color 0.5s ease, color 0.5s ease; /* Mod geçişi animasyonu */
+    }
+
+    #main-content {
+      display: none;
+      opacity: 0;
+      transition: opacity 1.2s ease-in-out;
+      overflow-y: auto; /* İçerik kaydırılabilir olsun */
+      flex-grow: 1;
+      text-align: center;
+      padding-top: 160px; /* Sabit başlık ve navigasyon için boşluk artırıldı */
+      padding-bottom: 60px; /* Footer için boşluk */
+    }
+
+    /* Detroit: Become Human temalı başlık */
+    header {
+      background-color: var(--bg-secondary);
+      color: var(--text-primary);
+      font-weight: 700;
+      border-bottom: 1px solid var(--border-color);
+      padding: 20px;
+      position: fixed; /* Başlığı en üste sabitle */
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000; /* Diğer içeriklerin üzerinde olsun */
+      box-sizing: border-box; /* Padding genişliğe dahil olsun */
+    }
+
+    /* Glitch Efekti */
+    .glitch-effect {
+      position: relative;
+      color: var(--text-primary); /* Metin rengi, altta kalacak */
+      /* Ana metin gölgeleri, animasyonla değişecek */
+      text-shadow: 0.05em 0 0 var(--glitch-color-1), -0.05em 0 0 var(--glitch-color-2);
+      animation: text-glitch 0.8s infinite alternate; /* Ana glitch animasyonu */
+    }
+
+    .glitch-effect::before,
+    .glitch-effect::after {
+      content: attr(data-text); /* data-text özelliğini içerik olarak kullan */
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: var(--bg-primary); /* Arka planı eşleştirerek parçaları gizle */
+    }
+
+    .glitch-effect::before {
+      left: -2px;
+      text-shadow: 0.05em 0 0 var(--glitch-color-3); /* Farklı renk gölgesi */
+      animation: glitch-left 0.8s infinite alternate-reverse;
+    }
+
+    .glitch-effect::after {
+      left: 2px;
+      text-shadow: -0.05em 0 0 var(--glitch-color-4); /* Farklı renk gölgesi */
+      animation: glitch-right 0.8s infinite alternate-reverse;
+    }
+
+    @keyframes text-glitch {
+      0% { text-shadow: 0.05em 0 0 var(--glitch-color-1), -0.05em 0 0 var(--glitch-color-2); }
+      25% { text-shadow: 0.08em 0 0 var(--glitch-color-3), -0.08em 0 0 var(--glitch-color-1); }
+      50% { text-shadow: 0.05em 0 0 var(--glitch-color-2), -0.05em 0 0 var(--glitch-color-4); }
+      75% { text-shadow: 0.02em 0 0 var(--glitch-color-4), -0.02em 0 0 var(--glitch-color-3); }
+      100% { text-shadow: 0.05em 0 0 var(--glitch-color-1), -0.05em 0 0 var(--glitch-color-2); }
+    }
+
+    @keyframes glitch-left {
+      0% { transform: translate(0); clip-path: inset(0 0 0 0); }
+      20% { transform: translate(-5px, 0); clip-path: inset(0 0 0 0); }
+      40% { transform: translate(0, 5px); clip-path: inset(0 0 0 0); }
+      60% { transform: translate(5px, 0); clip-path: inset(0 0 0 0); }
+      80% { transform: translate(0, -5px); clip-path: inset(0 0 0 0); }
+      100% { transform: translate(0); clip-path: inset(0 0 0 0); }
+    }
+
+    @keyframes glitch-right {
+      0% { transform: translate(0); clip-path: inset(0 0 0 0); }
+      20% { transform: translate(5px, 0); clip-path: inset(0 0 0 0); }
+      40% { transform: translate(0, -5px); clip-path: inset(0 0 0 0); }
+      60% { transform: translate(-5px, 0); clip-path: inset(0 0 0 0); }
+      80% { transform: translate(0, 5px); clip-path: inset(0 0 0 0); }
+      100% { transform: translate(0); clip-path: inset(0 0 0 0); }
+    }
+
+    /* Ana başlık için başlangıç glitch animasyonu */
+    @keyframes glitch-startup-anim {
+      0% { opacity: 0; text-shadow: none; }
+      10%, 30%, 50%, 70%, 90% { opacity: 1; text-shadow: 1px 1px var(--glitch-color-1), -1px -1px var(--glitch-color-2); }
+      20%, 40%, 60%, 80% { opacity: 0.8; text-shadow: 2px 2px var(--glitch-color-3), -2px -2px var(--glitch-color-4); }
+      100% { opacity: 1; text-shadow: 1px 1px var(--glitch-color-1), -1px -1px var(--glitch-color-2); }
+    }
+
+    header h1 {
+      animation: glitch-startup-anim 0.8s ease-out forwards; /* Bir kez çalışır */
+    }
+
+    /* Detroit: Become Human temalı navigasyon */
+    nav {
+      background-color: var(--bg-secondary);
+      color: var(--text-primary);
+      font-weight: 700;
+      border-bottom: 1px solid var(--border-color);
+      padding: 10px;
+      margin-bottom: 0; /* Sabitlendiği için alttan boşluğa gerek yok */
+      display: flex;
+      flex-direction: row; /* Yatay düzen için */
+      flex-wrap: wrap; /* Butonların sığmadığında alt satıra geçmesini sağlar */
+      justify-content: center; /* Yatayda ortala */
+      gap: 10px;
+      position: fixed; /* Navigasyonu başlığın altına sabitle */
+      top: 110px; /* Başlığın yüksekliği ve ek boşluk */
+      left: 0;
+      width: 100%;
+      z-index: 999; /* Başlığın altında ama içeriğin üzerinde olsun */
+      box-sizing: border-box; /* Padding genişliğe dahil olsun */
+    }
+    
+    nav button {
+      margin: 5px;
+      padding: 10px 20px;
+      background-color: var(--button-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 5px; /* Hafif yuvarlak köşeler */
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      color: var(--button-text);
+      transition: all 0.3s ease;
+      font-family: 'Segoe UI', 'Roboto', sans-serif; /* Butonlar da modern font */
+      box-shadow: 0 0 5px var(--shadow-color-light);
+      white-space: nowrap; /* Metnin tek satırda kalmasını sağlar */
+      width: fit-content; /* Buton içeriğine göre genişlesin */
+    }
+
+    nav button:hover {
+      background-color: var(--button-hover-bg);
+      color: var(--button-text); /* Hover'da metin rengi değişmesin */
+      box-shadow: 0 0 10px var(--shadow-color-strong);
+    }
+
+    .content {
+      padding: 30px;
+      display: flex; /* Ana içerik bölümlerini yatay hizala */
+      flex-wrap: wrap; /* Sığmadığında alt satıra geçmesini sağla */
+      justify-content: center; /* Yatayda ortala */
+      align-items: flex-start; /* Dikeyde başlangıca hizala */
+      gap: 30px; /* Bölümler arası boşluk */
+    }
+
+    .content > div { /* Tüm içerik bölümleri için ortak stil */
+        background-color: rgba(42, 42, 42, 0.9); /* Arka planı koyulaştırarak okunabilirliği artır */
+        color: var(--text-secondary);
+        border: 1px solid var(--border-color);
+        border-radius: 5px;
+        padding: 20px;
+        margin-bottom: 0; /* Flexbox ile boşluk yönetimi */
+        max-width: calc(50% - 30px); /* İki sütun için genişlik, boşluğu düş */
+        min-width: 320px; /* Çok daralmasını engelle */
+        text-align: left; /* Metni sola hizala */
+        box-shadow: 0 0 15px var(--shadow-color-light);
+        flex-grow: 1; /* Esnek büyüme */
+        transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease;
+    }
+
+    .content h2 {
+        color: var(--text-primary);
+        text-align: center;
+        margin-bottom: 20px;
+        text-shadow: 0 0 8px var(--shadow-color-strong);
+    }
+
+    .content p {
+        line-height: 1.6;
+        margin-bottom: 15px;
+    }
+
+    .hidden {
+      display: none;
+    }
+    
+    footer {
+      background-color: var(--bg-secondary);
+      color: var(--text-primary);
+      padding: 10px;
+      text-align: center;
+      position: relative;
+      bottom: 0;
+      width: 100%;
+      box-sizing: border-box;
+      border-top: 1px solid var(--border-color);
+      transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease;
+    }
+
+    /* Görseller bölümündeki resimler için yatay düzen */
+    #current-images {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px; /* Resimler arası boşluk */
+      margin-top: 20px;
+    }
+
+    #current-images img {
+      max-width: 250px; /* Resim genişliğini ayarla */
+      height: auto;
+      margin: 0; /* Flexbox ile boşluk yönetimi */
+      border-radius: 5px; /* Hafif yuvarlak köşeler */
+      box-shadow: 0 0 10px var(--shadow-color-light);
+      border: 1px solid var(--border-color);
+      flex-grow: 1; /* Esnek büyüme */
+      transition: border-color 0.5s ease, box-shadow 0.5s ease;
+    }
+    
+    #loginModal {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.95); /* Daha koyu arka plan */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    #loginBox {
+      background: var(--bg-primary);
+      padding: 30px 40px;
+      border-radius: 5px; /* Hafif yuvarlak köşeler */
+      box-shadow: 0 0 20px var(--shadow-color-strong);
+      text-align: left; /* Metni sola hizala */
+      width: 400px; /* Genişliği artır */
+      color: var(--text-primary);
+      font-family: 'Segoe UI', 'Roboto', sans-serif; /* Modern font */
+      border: 1px solid var(--border-color);
+      box-sizing: border-box;
+      animation: none; /* Flicker animasyonu kaldırıldı */
+      transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease;
+    }
+    
+    #loginBox h2 {
+        color: var(--text-primary);
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    #hacker-text-container {
+        min-height: 2em; /* Metin için yeterli alan bırak */
+        margin-bottom: 15px;
+        display: block; /* Tekrar görünür yap */
+        text-align: center;
+        font-size: 1.1em;
+    }
+
+    .blinking-cursor {
+      font-weight: 300;
+      font-size: 1.2em;
+      color: var(--text-primary);
+      -webkit-animation: 1s blink step-end infinite;
+      -moz-animation: 1s blink step-end infinite;
+      -ms-animation: 1s blink step-end infinite;
+      -o-animation: 1s blink step-end infinite;
+      animation: 1s blink step-end infinite;
+    }
+
+    @keyframes blink {
+      from, to { color: transparent }
+      50% { color: var(--text-primary); } /* Siber-mavi imleç */
+    }
+    @-moz-keyframes blink {
+      from, to { color: transparent }
+      50% { color: var(--text-primary); }
+    }
+    @-webkit-keyframes blink {
+      from, to { color: transparent }
+      50% { color: var(--text-primary); }
+    }
+    @-ms-keyframes blink {
+      from, to { color: transparent }
+      50% { color: var(--text-primary); }
+    }
+    @-o-keyframes blink {
+      from, to { color: transparent }
+      50% { color: var(--text-primary); }
+    }
+    
+    #loginBox input {
+      width: calc(100% - 22px); /* Padding'i hesaba kat */
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 3px; /* Hafif yuvarlak köşeler */
+      border: 1px solid var(--border-color);
+      font-size: 16px;
+      background-color: var(--input-bg);
+      color: var(--input-text);
+      font-family: 'Segoe UI', 'Roboto', sans-serif;
+      transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease;
+    }
+    
+    #loginBox button {
+      background-color: var(--button-hover-bg); /* Giriş butonu için daha parlak renk */
+      color: var(--button-text);
+      font-weight: bold;
+      border: 1px solid var(--border-color);
+      padding: 10px 20px;
+      border-radius: 5px; /* Hafif yuvarlak köşeler */
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      width: 100%; /* Tam genişlik */
+      margin-top: 15px;
+      box-shadow: 0 0 5px var(--shadow-color-light);
+    }
+    
+    #loginBox button:hover {
+      background-color: var(--button-bg); /* Hover'da biraz koyulaşsın */
+      color: var(--button-text);
+      box-shadow: 0 0 10px var(--shadow-color-strong);
+    }
+    
+    #loginError {
+      color: var(--error-color);
+      margin-top: 10px;
+      font-weight: bold;
+      display: none;
+      text-align: center;
+      font-size: 0.9em;
+    }
+    
+    #countdown {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: rgba(0, 0, 0, 0.7); /* Şeffaf koyu arka plan */
+      color: var(--text-primary);
+      padding: 10px 15px;
+      border-radius: 10px;
+      font-size: 20px;
+      font-weight: bold;
+      z-index: 999;
+      display: none;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 0 10px var(--shadow-color-light);
+      transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease;
+    }
+
+    /* Chatbot Styles */
+    #chat-container {
+      position: fixed;
+      bottom: 20px; /* Footer'ın üstünde konumlandırıldı */
+      right: 20px;
+      width: 350px;
+      height: 450px;
+      background-color: var(--bg-primary);
+      border-radius: 15px;
+      box-shadow: 0 0 20px var(--shadow-color-light);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      z-index: 1000;
+      display: none; /* Başlangıçta gizli */
+      font-family: 'Segoe UI', 'Roboto', sans-serif;
+      transition: background-color 0.5s ease, box-shadow 0.5s ease;
+    }
+
+    #chat-header {
+      background-color: var(--text-primary); /* Siber-mavi başlık */
+      color: var(--bg-primary); /* Koyu gri metin */
+      padding: 10px;
+      border-top-left-radius: 15px;
+      border-top-right-radius: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: bold;
+      transition: background-color 0.5s ease, color 0.5s ease;
+    }
+
+    #chat-close-btn {
+      background: none;
+      border: none;
+      color: var(--bg-primary); /* Koyu gri X */
+      font-size: 20px;
+      cursor: pointer;
+      padding: 0 5px;
+      transition: color 0.5s ease;
+    }
+
+    #chat-messages {
+      flex-grow: 1;
+      padding: 15px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background-color: var(--bg-primary);
+      transition: background-color 0.5s ease;
+    }
+
+    .chat-message {
+      max-width: 80%;
+      padding: 10px 15px;
+      border-radius: 15px;
+      word-wrap: break-word;
+    }
+
+    .chat-message.user {
+      align-self: flex-end;
+      background-color: var(--text-primary); /* Siber-mavi kullanıcı mesajı */
+      color: var(--bg-primary); /* Koyu gri metin */
+      border-bottom-right-radius: 5px;
+      transition: background-color 0.5s ease, color 0.5s ease;
+    }
+
+    .chat-message.bot {
+      align-self: flex-start;
+      background-color: var(--input-bg); /* Orta koyu gri bot mesajı */
+      color: var(--text-secondary); /* Açık gri metin */
+      border-bottom-left-radius: 5px;
+      transition: background-color 0.5s ease, color 0.5s ease;
+    }
+
+    /* Bot mesajları için glitch efekti kaldırıldı */
+    .chat-message.bot.glitch-effect {
+      /* Bu stil blokları artık bot mesajları için uygulanmayacak */
+      /* Ancak glitch efekti hala başlık için geçerli */
+    }
+
+    .chat-message.bot.glitch-effect::before,
+    .chat-message.bot.glitch-effect::after {
+      /* Bu stil blokları artık bot mesajları için uygulanmayacak */
+    }
+
+
+    #chat-input-container {
+      display: flex;
+      padding: 10px;
+      background-color: var(--bg-secondary);
+      border-top: 1px solid var(--border-color);
+      border-bottom-left-radius: 15px;
+      border-bottom-right-radius: 15px;
+      transition: background-color 0.5s ease, border-color 0.5s ease;
+    }
+
+    #chat-input {
+      flex-grow: 1;
+      padding: 10px;
+      border-radius: 3px; /* Hafif yuvarlak köşeler */
+      border: 1px solid var(--border-color); /* Düzeltme: 19px yerine 1px */
+      font-size: 16px;
+      background-color: var(--input-bg);
+      color: var(--input-text);
+      font-family: 'Segoe UI', 'Roboto', sans-serif;
+      transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease;
+    }
+
+    #chat-send-btn {
+      background-color: var(--text-primary); /* Siber-mavi gönder butonu */
+      color: var(--bg-primary); /* Koyu gri metin */
+      font-weight: bold;
+      border: 1px solid var(--border-color);
+      padding: 10px 15px;
+      border-radius: 5px; /* Hafif yuvarlak köşeler */
+      cursor: pointer;
+      margin-left: 10px;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 5px var(--shadow-color-light);
+    }
+
+    #chat-send-btn:hover {
+      background-color: var(--button-bg);
+      box-shadow: 0 0 10px var(--shadow-color-strong);
+    }
+
+    #chat-loading {
+      text-align: center;
+      padding: 10px;
+      color: var(--text-primary);
+      font-style: italic;
+      display: none;
+      transition: color 0.5s ease;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 900px) { /* Geniş ekranlarda iki sütun, daha küçüklerde tek sütun */
+      .content > div {
+        max-width: 100%; /* Tek sütun için tam genişlik */
+      }
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        flex-direction: column; /* Mobil görünümde dikey kalsın */
+        align-items: center;
+      }
+      #chat-container {
+        width: 90%;
+        height: 70vh;
+        right: 5%;
+        left: 5%;
+        bottom: 20px; /* Mobil görünümde footer'a yakın */
+      }
+    }
+
+    /* TTS loading indicator */
+    .tts-loading {
+        margin-top: 10px;
+        color: var(--text-primary);
+        font-style: italic;
+        transition: color 0.5s ease;
+    }
+
+    /* Summarization Section Styles */
+    #ozetleme {
+        padding: 20px;
+        text-align: left;
+        max-width: 800px;
+        margin: 0 auto;
+        background-color: rgba(42, 42, 42, 0.9); /* Arka planı koyulaştırarak okunabilirliği artır */
+        border-radius: 5px;
+        box-shadow: 0 0 15px var(--shadow-color-light);
+        border: 1px solid var(--border-color);
+        display: block; /* Tekrar görünür yap */
+        transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease;
+    }
+
+    #ozetleme h2 {
+        color: var(--text-primary);
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    #text-to-summarize {
+        width: calc(100% - 22px); /* Padding'i hesaba kat */
+        height: 200px;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid var(--border-color);
+        border-radius: 3px; /* Hafif yuvarlak köşeler */
+        background-color: var(--input-bg);
+        color: var(--input-text);
+        font-family: 'Segoe UI', 'Roboto', sans-serif;
+        font-size: 1em;
+        resize: vertical;
+        transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease;
+    }
+
+    #summarize-button {
+        background-color: var(--button-hover-bg);
+        color: var(--button-text);
+        font-weight: bold;
+        border: 1px solid var(--border-color);
+        padding: 10px 20px;
+        border-radius: 5px; /* Hafif yuvarlak köşeler */
+        cursor: pointer;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        width: auto;
+        display: block;
+        margin: 0 auto 15px auto;
+        box-shadow: 0 0 5px var(--shadow-color-light);
+    }
+
+    #summarize-button:hover {
+        background-color: var(--button-bg);
+        box-shadow: 0 0 10px var(--shadow-color-strong);
+    }
+
+    #summarization-loading {
+        text-align: center;
+        padding: 10px;
+        color: var(--text-primary);
+        font-style: italic;
+        display: none;
+        transition: color 0.5s ease;
+    }
+
+    #summarized-text-container {
+        margin-top: 20px;
+        padding: 15px;
+        border: 1px dashed var(--border-color);
+        border-radius: 5px;
+        background-color: var(--input-bg);
+        min-height: 100px;
+        color: var(--input-text);
+        font-family: 'Segoe UI', 'Roboto', sans-serif;
+        text-align: left;
+        white-space: pre-wrap;
+        word-break: break-word;
+        transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease;
+    }
+
+    /* Renk Seçici Modalı Stilleri */
+    .modal {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.95);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 10000;
+    }
+
+    .modal-box {
+      background: var(--bg-primary);
+      padding: 30px 40px;
+      border-radius: 5px;
+      box-shadow: 0 0 20px var(--shadow-color-strong);
+      text-align: center;
+      color: var(--text-primary);
+      font-family: 'Segoe UI', 'Roboto', sans-serif;
+      border: 1px solid var(--border-color);
+      box-sizing: border-box;
+      width: 350px;
+    }
+
+    .modal-box h2 {
+      margin-bottom: 20px;
+    }
+
+    .modal-box input[type="color"] {
+      width: 100%;
+      height: 50px;
+      border: 1px solid var(--border-color);
+      border-radius: 3px;
+      margin-bottom: 20px;
+      background-color: transparent; /* Renk kutusunun kendi rengi görünsün */
+      cursor: pointer;
+    }
+
+    .modal-box button {
+      background-color: var(--button-hover-bg);
+      color: var(--button-text);
+      font-weight: bold;
+      border: 1px solid var(--border-color);
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      width: calc(50% - 10px); /* İki buton yan yana */
+      margin: 5px;
+      box-shadow: 0 0 5px var(--shadow-color-light);
+    }
+
+    .modal-box button:hover {
+      background-color: var(--button-bg);
+      box-shadow: 0 0 10px var(--shadow-color-strong);
+    }
+    
+    /* Metin Renk Seçici Modalı için özel ayarlamalar */
+    #textColorCustomizerBox input[type="color"] {
+        height: 40px; /* Biraz daha küçük olsun */
+        margin-bottom: 10px;
+    }
+    #textColorCustomizerBox h2 {
+        font-size: 1.1em;
+        margin-top: 15px;
+        margin-bottom: 10px;
+    }
+
+    /* Animasyonlar Bölümü Stilleri */
+    #animasyonlar { /* Genel animasyonlar bölümünü merkezle ve esnet */
+        max-width: 100%; /* Tam genişlik kapsasın */
+        padding: 0; /* Boşlukları kaldır */
+    }
+
+    #animasyonlar .content-inner { /* İçerik için bir wrapper ekliyoruz */
+        display: flex;
+        flex-direction: column; /* Dikey olarak sırala */
+        align-items: center; /* Merkezi hizala */
+        gap: 20px; /* Video öğeleri arasındaki boşluk */
+        padding: 30px; /* Genel içeriğin padding'ini koru */
+    }
+    
+    #animasyonlar h2 {
+        color: var(--text-primary);
+        text-align: center;
+        margin-bottom: 20px;
+        text-shadow: 0 0 8px var(--shadow-color-strong);
+        width: 100%; /* Başlığın tam genişliği kapsamasını sağla */
+    }
+
+    #animasyonlar p {
+        color: var(--text-secondary);
+        text-align: center;
+        margin-bottom: 20px;
+        width: 100%; /* Paragrafın tam genişliği kapsamasını sağla */
+    }
+
+    .video-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+        width: 100%; /* Kapsayıcı da tam genişlikte olsun */
+        max-width: 1200px; /* Daha büyük ekranlarda aşırı büyümesini engelle */
+    }
+
+    .video-item {
+        background-color: var(--bg-primary);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 15px;
+        /* Tek bir öğenin alabileceği maksimum genişliği artırdık */
+        max-width: 800px; /* Videonun daha büyük olmasını sağlar */
+        width: 100%; /* Esnek büyüme için genişliği ayarla */
+        box-shadow: 0 0 10px var(--shadow-color-light);
+        text-align: center;
+        transition: all 0.3s ease;
+        flex-grow: 1; /* Esnek büyüme */
+    }
+
+    .video-item:hover {
+        box-shadow: 0 0 20px var(--shadow-color-strong);
+    }
+
+    .video-responsive {
+        position: relative;
+        padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+        height: 0;
+        overflow: hidden;
+        margin-bottom: 10px; /* Video ile başlık arasına boşluk */
+        border-radius: 5px;
+        border: 1px solid var(--text-primary);
+    }
+
+    .video-responsive iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    .video-item h3 {
+        color: var(--text-primary);
+        margin-top: 0;
+        margin-bottom: 10px;
+    }
+
+    .video-item p {
+        color: var(--text-secondary);
+        font-size: 0.9em;
+    }
+
+    /* Responsive adjustments for video size */
+    @media (max-width: 768px) {
+        .video-item {
+            max-width: 100%; /* Mobil cihazlarda tam genişlik */
+            padding: 10px; /* Mobil cihazlarda daha az padding */
+        }
+        .video-container {
+            flex-direction: column; /* Mobil cihazlarda dikey sıralama */
+            align-items: center;
+        }
+    }
+  </style>
+</head>
+<body>
+  
+<div id="loginModal" class="modal">
+  <div id="loginBox" class="modal-box">
+    <div id="hacker-text-container">
+      <span id="hacker-text"></span><span class="blinking-cursor">_</span>
+    </div>
+    <input type="text" id="username" placeholder="Kullanıcı adı" />
+    <input type="password" id="password" placeholder="Şifre" />
+    <button onclick="checkLogin()">Giriş yap</button>
+    <div id="loginError"></div> 
+  </div>
+</div>
+
+<!-- Arka Plan Renk Seçici Modalı -->
+<div id="colorPickerModal" class="modal" style="display: none;">
+  <div id="colorPickerBox" class="modal-box">
+    <h2>ARKA PLAN RENGİNİ ÖZELLEŞTİR</h2>
+    <input type="color" id="backgroundColorPicker" value="#1a1a1a"> <!-- Varsayılan koyu gri -->
+    <button onclick="applyBackgroundColor()">UYGULA</button>
+    <button onclick="closeColorPicker()">KAPAT</button>
+  </div>
+</div>
+
+<!-- Metin Renk Seçici Modalı -->
+<div id="textColorCustomizerModal" class="modal" style="display: none;">
+  <div id="textColorCustomizerBox" class="modal-box">
+    <h2>ANA METİN RENGİNİ AYARLA</h2>
+    <input type="color" id="primaryTextColorInput" value="#00e6e6">
+    <h2>İKİNCİL METİN RENGİNİ AYARLA</h2>
+    <input type="color" id="secondaryTextColorInput" value="#e0e0e0">
+    <button onclick="applyTextColors()">UYGULA</button>
+    <button onclick="closeTextColorCustomizer()">KAPAT</button>
+  </div>
+</div>
+  
+<div id="main-content">
+  <header>
+    <h1 class="glitch-effect" data-text="BENİM İLK WEB SAYFAM">BENİM İLK WEB SAYFAM</h1>
+  </header>
+  
+  <nav>
+    <button onclick="showSection('anasayfa')">ANA SİSTEM</button>
+    <button onclick="showSection('hakkimizda')">PROTOKOL KAYITLARI</button>
+    <button onclick="showSection('iletisim')">BAĞLANTI NOKTASI</button>
+    <button onclick="toggleChat()">SİSTEM ASİSTANI</button>
+    <button onclick="toggleMode()">MOD DEĞİŞTİR</button>
+    <button onclick="sayThanks()">MEHMET.E</button>
+    <button onclick="openColorPicker()">ARKA PLAN ÖZELLEŞTİR</button> <!-- Buton metni güncellendi -->
+    <button onclick="openTextColorCustomizer()">HARFLERİ ÖZELLEŞTİR</button> <!-- Yeni Harfleri Özelleştir butonu -->
+    <button onclick="showSection('ozetleme')">ÖZETLEYİCİ</button> <!-- ÖZETLEYİCİ butonu -->
+    <button onclick="showSection('animasyonlar')">ANİMASYONLAR</button> <!-- Yeni Animasyonlar butonu -->
+  </nav>
+  
+  <div class="content">
+    <div id="anasayfa">
+      <h2 class="glitch-effect" data-text="HOŞ GELDİNİZ, KULLANICI.">HOŞ GELDİNİZ, KULLANICI.</h2>
+      <p id="anasayfa-text">Bu, ana sistem arayüzünüzdür. Tüm modüllere erişim buradan sağlanır. Veri akışını izleyin ve protokolleri yönetin.</p>
+      <div style="margin-top: 20px; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
+        <button onclick="showSection('gorseller')">GÖRSEL VERİLERİ GÖSTER</button>
+      </div>
+      <button onclick="readText('anasayfa-text')" style="margin-top: 20px;">SESLİ OKUMA BAŞLAT ?</button>
+      <div id="anasayfa-tts-loading" class="tts-loading" style="display: none;">Ses verisi işleniyor...</div>
+    </div>
+    
+    <div id="hakkimizda" class="hidden">
+      <h2 class="glitch-effect" data-text="PROTOKOL KAYITLARI">PROTOKOL KAYITLARI</h2>
+      <p>Bizler, bu dijital arayüzü geliştiren birimleriz. Amacımız, insan-makine etkileşimini optimize etmek ve veri akışını güvenli kılmaktır.</p>
+    </div>
+    
+    <div id="iletisim" class="hidden">
+      <h2 class="glitch-effect" data-text="BAĞLANTI NOKTASI">BAĞLANTI NOKTASI</h2>
+      <p>Sistem yöneticileriyle bağlantı kurmak için: <strong>contact@cyberlife.com</strong></p>
+      <p>Geliştirici konsolunu kullanarak ek veri paketleri gönderebilirsiniz. Olası zayıflıkları tespit edin.</p>
+    </div>
+    
+    <div id="gorseller" class="hidden">
+      <h2 class="glitch-effect" data-text="GÖRSEL VERİLER">GÖRSEL VERİLER</h2>
+      <p>Mevcut görsel veriler burada listelenmektedir. Yeni görseller eklemek için aşağıdaki alanı kullanın:</p>
+      <div style="display: flex; gap: 10px; margin-bottom: 20px; justify-content: center; flex-wrap: wrap;">
+        <input type="text" id="newImageUrl" placeholder="Görsel URL'si girin" style="flex-grow: 1; max-width: 400px; padding: 8px; border-radius: 3px; border: 1px solid var(--border-color); background-color: var(--input-bg); color: var(--input-text);">
+        <button onclick="addNewImage()" style="padding: 8px 15px; background-color: var(--button-bg); color: var(--button-text); border: 1px solid var(--border-color); border-radius: 5px; cursor: pointer; transition: all 0.3s ease;">Görsel Ekle</button>
+      </div>
+      <div id="current-images">
+        <img src="https://pm1.aminoapps.com/6915/76b2873249f98d2a9b114a91ac710480aa0a2983r1-640-360v2_uhq.jpg" alt="[Detroit Become Human'dan Connor karakteri]">
+        <img src="https://i.pinimg.com/736x/8c/4e/d3/8c4ed30cba9cfc072d2550c7b00422a1.jpg" alt="[Detroit Become Human'dan Kara karakteri]">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQuhYMQCOnz_H9kT6hWvoIT7flyPygvteGDDw&s" alt="[Detroit Become Human'dan Markus karakteri]">
+        <img src="https://static1.thegamerimages.com/wordpress/wp-content/uploads/2021/03/detroit-become-human-connor-2.jpg" alt="[Detroit Become Human'dan Connor'ın yakın çekim görüntüsü]">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSa1UBkDir8XVS9_6F-M3-EbCcHwzIBhfaZ9w&s" alt="[Detroit Become Human'dan bir sahne]">
+        <img src="https://wallpapers.com/images/hd/detroit-become-human-connor-8dyojbgunf2ialxw.jpg" alt="[Detroit Become Human'dan Connor'ın başka bir görüntüsü]">
+        <img src="https://preview.redd.it/was-your-markus-canonically-a-revolutionary-or-a-pacifist-v0-vpfmkz2wytkc1.jpeg?auto=webp&s=bc9a530beef4f05236da3ea83c4f2e22d8629d96" alt="[Detroit Become Human'dan Markus karakteri]">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrkkHY2XxBrspn_6rj_C6mCDXckx92hxjvYpKP4GcD6c_VlVJEtD_czuhHCQG6ep-kQ7o&usqp=CAU" alt="[Detroit Become Human'dan bir grup karakter]">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT00XBfF-GE7pzz6rP7mWxjnOgX3ewhvVSCKg&s" alt="[Detroit Become Human'dan bir oyun sahnesi]">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTC4VTpxpT1nJmEnhiTwPE_s4J5rdhJyTWKrQ&s">
+      </div>
+    </div>
+  </div>
+  
+  <!-- Metin Özetleme Bölümü -->
+  <div id="ozetleme" class="hidden">
+    <h2 class="glitch-effect" data-text="VERİ ÖZETLEME MODÜLÜ">VERİ ÖZETLEME MODÜLÜ</h2>
+    <p>Aşağıdaki metin girdisini analiz ederek anahtar bilgileri çıkarın:</p>
+    <textarea id="text-to-summarize" placeholder="Metin girdisi bekleniyor..."></textarea>
+    <button id="summarize-button" onclick="summarizeText()">VERİYİ ÖZETLE</button>
+    <div id="summarization-loading" class="tts-loading" style="display: none;">Veri özeti oluşturuluyor...</div>
+    <h3>ÖZETLENMİŞ VERİ:</h3>
+    <div id="summarized-text-container"></div>
+  </div>
+
+  <!-- Animasyonlar Bölümü -->
+  <div id="animasyonlar" class="hidden content">
+    <h2 class="glitch-effect" data-text="SİNEMATİK VERİ AKIŞI">SİNEMATİK VERİ AKIŞI</h2>
+    <p style="color: var(--text-secondary);">Popüler oyun evrenlerinden seçilmiş sinematik animasyonları keşfedin.</p>
+    <div class="video-container">
+      <div class="video-item">
+        <h3>Detroit: Become Human Fan Yapımı Edit</h3>
+        <div class="video-responsive">
+            <iframe src="https://www.youtube.com/embed/iRhnC1Rpx8Y?controls=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        </div>
+        <p>Detroit: Become Human dünyasından etkileyici fan yapımı bir sahne montajı.</p>
+      </div>
+      <div class="video-item">
+        <h3>The Last of Us Hayran Düzenlemesi</h3>
+        <div class="video-responsive">
+            <iframe src="https://www.youtube.com/embed/ydQQ7DHpfjc?controls=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        </div>
+        <p>The Last of Us evreninden duygusal ve aksiyon dolu anların bir araya getirildiği hayran düzenlemesi.</p>
+      </div>
+    </div>
+    <p style="color: var(--text-secondary); font-size: 0.8em; margin-top: 20px;">[SİSTEM UYARISI]: Yukarıdaki videolar YouTube'dan doğrudan gömülmüştür. Video oynatma ayarları ve telif hakları YouTube politikalarına tabidir.</p>
+  </div>
+
+
+  <p style="color: var(--text-secondary); font-size: 0.8em; margin-top: 20px;">[SİSTEM NOTU]: Bu bir simülasyondu. Protokol 313'e uygunluk beklenir.</p>
+  <footer>
+    © 2025 CYBERLIFE SİSTEMLERİ - BETA VERSİYON
+  </footer>
+</div>
+
+<!-- Sohbet Botu Arayüzü -->
+<div id="chat-container">
+  <div id="chat-header">
+    <span>SİSTEM ASİSTANI</span>
+    <button id="chat-close-btn" onclick="toggleChat()">X</button>
+  </div>
+  <div id="chat-messages">
+    <div class="chat-message bot">Sistem yükleniyor... Bilgi akışı başlıyor.</div>
+  </div>
+  <div id="chat-loading">Yanıt işleniyor...</div>
+  <div id="chat-input-container">
+    <input type="text" id="chat-input" placeholder="Sorgunuzu girin..." />
+    <button id="chat-send-btn" onclick="sendMessage()">GÖNDER</button>
+  </div>
+</div>
+
+<div id="countdown">90</div>
+
+<script>
+let inactivityTimer;
+let countdownInterval;
+let remainingTime = 90;
+let chatHistory = []; // Sohbet geçmişini saklamak için
+let currentAudio = null; // Mevcut oynatılan sesi tutmak için
+
+// Web Audio API için AudioContext oluştur
+const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+// Detroit: Become Human temalı giriş için değişkenler ve fonksiyonlar
+const hackerTextElement = document.getElementById('hacker-text');
+const loginErrorElement = document.getElementById('loginError');
+const hackerMessages = [
+  "SİSTEM BAŞLATILIYOR...",
+  "KİMLİK DOĞRULAMA GEREKLİ.",
+  "ERİŞİM KODU GİRİNİZ."
+];
+let messageIndex = 0;
+let charIndex = 0;
+let typingInterval;
+
+function typeHackerText() {
+  if (charIndex < hackerMessages[messageIndex].length) {
+    hackerTextElement.textContent += hackerMessages[messageIndex].charAt(charIndex);
+    charIndex++;
+    setTimeout(typeHackerText, 70); // Yazma hızı
+  } else {
+    // Mesaj bitti, bir sonraki mesaja geç veya yeniden başlat
+    setTimeout(() => {
+      messageIndex = (messageIndex + 1) % hackerMessages.length;
+      charIndex = 0;
+      hackerTextElement.textContent = ''; // Bir sonraki mesaj için temizle
+      typeHackerText();
+    }, 2000); // Bir sonraki mesajı yazmadan önceki gecikme
+  }
+}
+
+// Giriş modalı gösterildiğinde bu fonksiyonu çağır
+function startHackerTyping() {
+  hackerTextElement.textContent = '';
+  loginErrorElement.textContent = ''; // Önceki hatayı temizle
+  messageIndex = 0;
+  charIndex = 0;
+  if (typingInterval) clearInterval(typingInterval);
+  typingInterval = setTimeout(typeHackerText, 500); // Kısa bir gecikmeden sonra yazmaya başla
+}
+
+
+function checkLogin() {
+  const username = document.getElementById('username').value.trim();
+  const password = document.getElementById('password').value.trim();
+  
+  if (username === "kagankerem" && password === "1234") {
+    loginErrorElement.style.display = "none";
+    document.getElementById('loginModal').style.display = "none";
+    const main = document.getElementById('main-content');
+    main.style.display = "flex"; // Flex olarak ayarla
+    setTimeout(() => main.style.opacity = 1, 10);
+    document.body.style.overflow = "auto";
+    document.getElementById('countdown').style.display = "block";
+    showSection('anasayfa');
+    startInactivityTimer();
+    addActivityListeners();
+    if (typingInterval) clearInterval(typingInterval); // Giriş yapıldığında yazmayı durdur
+  } else {
+    // Hata mesajını yazma efektiyle göster
+    loginErrorElement.style.display = "block";
+    loginErrorElement.textContent = ''; // Yazmak için temizle
+    // Hata mesajı "oturum açılamadı error verildi" olarak güncellendi.
+    let errorText = "oturum açılamadı error verildi"; 
+    let errorCharIndex = 0;
+    if (typingInterval) clearInterval(typingInterval); // Hacker metin yazmayı durdur
+    
+    function typeErrorText() {
+      if (errorCharIndex < errorText.length) {
+        loginErrorElement.textContent += errorText.charAt(errorCharIndex);
+        errorCharIndex++;
+        setTimeout(typeErrorText, 50); // Hata için daha hızlı yazma
+      } else {
+        // Hata mesajı bitti, bir gecikmeden sonra hacker yazmayı yeniden başlat
+        setTimeout(startHackerTyping, 3000);
+      }
+    }
+    typeErrorText();
+  }
+}
+
+let gameAnimationFrameId = null; // Oyun animasyon çerçeve kimliğini saklamak için
+
+function showSection(id) {
+  // Tüm içerik bölümlerini seç
+  const sections = document.querySelectorAll('#anasayfa, #hakkimizda, #iletisim, #gorseller, #ozetleme, #animasyonlar'); 
+  sections.forEach(sec => {
+    sec.classList.add('hidden'); // Tüm bölmeleri gizle
+  });
+
+  document.getElementById(id).classList.remove('hidden'); // İstenen bölümü göster
+}
+
+function startInactivityTimer() {
+  clearTimeout(inactivityTimer);
+  clearInterval(countdownInterval);
+  remainingTime = 90;
+  updateCountdownDisplay();
+  
+  inactivityTimer = setTimeout(() => {
+    // Modalı kapatmak yerine, kullanıcıya soran bir mesaj kutusu gösterelim
+    showCustomAlert("SİSTEM UYARISI: ETKİNSİZLİK TESPİT EDİLDİ. OTURUMUNUZ SONA ERMEK ÜZERE.", () => {
+        // Kullanıcı "Evet" derse zamanlayıcıyı sıfırla
+        startInactivityTimer();
+    }, () => { 
+        // Kullanıcı "Hayır" derse veya kapatırsa sayfayı yenile
+        location.reload();
+    });
+  }, 90000); // 90 saniye
+  
+  countdownInterval = setInterval(() => {
+    remainingTime--;
+    updateCountdownDisplay();
+    if (remainingTime <= 0) {
+      clearInterval(countdownInterval);
+    }
+  }, 1000); // 1 saniye
+}
+
+function updateCountdownDisplay() {
+  document.getElementById('countdown').textContent = remainingTime;
+}
+
+function addActivityListeners() {
+  ['click', 'mousemove', 'keypress', 'scroll'].forEach(evt => {
+    document.addEventListener(evt, startInactivityTimer);
+  });
+}
+
+document.getElementById('password').addEventListener('keypress', function(e) {
+  if (e.key === 'Enter') checkLogin();
+});
+
+// Özel Alert/Confirm Kutusu
+function showCustomAlert(message, onConfirm, onCancel) {
+    const modal = document.createElement('div');
+    modal.style.position = 'fixed';
+    modal.style.top = '0';
+    modal.style.left = '0';
+    modal.style.right = '0';
+    modal.style.bottom = '0';
+    modal.style.background = 'rgba(0, 0, 0, 0.9)'; /* Daha koyu arka plan */
+    modal.style.display = 'flex';
+    modal.style.justifyContent = 'center';
+    modal.style.alignItems = 'center';
+    modal.style.zIndex = '10000';
+
+    const box = document.createElement('div');
+    box.style.background = 'var(--bg-primary)'; /* Koyu gri */
+    box.style.padding = '30px';
+    box.style.borderRadius = '5px';
+    box.style.boxShadow = '0 0 20px var(--shadow-color-strong)'; /* Siber-mavi gölge */
+    box.style.textAlign = 'center';
+    box.style.color = 'var(--text-primary)'; /* Siber-mavi metin */
+    box.style.maxWidth = '350px';
+    box.style.border = '1px solid var(--border-color)';
+    box.style.transition = 'background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease';
+
+    const msg = document.createElement('p');
+    msg.textContent = message;
+    msg.style.marginBottom = '25px';
+    msg.style.fontWeight = 'bold';
+    msg.style.fontSize = '1.1em';
+
+    const btnContainer = document.createElement('div');
+    const confirmBtn = document.createElement('button');
+    confirmBtn.textContent = 'DEVAM ET';
+    confirmBtn.style.margin = '5px';
+    confirmBtn.style.padding = '10px 20px';
+    confirmBtn.style.background = 'var(--button-hover-bg)';
+    confirmBtn.style.color = 'var(--button-text)';
+    confirmBtn.style.border = 'none';
+    confirmBtn.style.borderRadius = '5px';
+    confirmBtn.style.cursor = 'pointer';
+    confirmBtn.style.fontWeight = 'bold';
+    confirmBtn.style.transition = 'all 0.3s ease';
+    confirmBtn.onclick = () => {
+        document.body.removeChild(modal);
+        if (onConfirm) onConfirm();
+    };
+    confirmBtn.onmouseover = () => confirmBtn.style.boxShadow = '0 0 10px var(--shadow-color-strong)';
+    confirmBtn.onmouseout = () => confirmBtn.style.boxShadow = 'none';
+
+
+    const cancelBtn = document.createElement('button');
+    cancelBtn.textContent = 'OTURUMU SONLANDIR';
+    cancelBtn.style.margin = '5px';
+    cancelBtn.style.padding = '10px 20px';
+    cancelBtn.style.background = 'var(--error-color)'; /* Dijital kırmızı */
+    cancelBtn.style.color = 'white';
+    cancelBtn.style.border = 'none';
+    cancelBtn.style.borderRadius = '5px';
+    cancelBtn.style.cursor = 'pointer';
+    cancelBtn.style.fontWeight = 'bold';
+    cancelBtn.style.transition = 'all 0.3s ease';
+    cancelBtn.onclick = () => {
+        document.body.removeChild(modal);
+        if (onCancel) onCancel();
+    };
+    cancelBtn.onmouseover = () => cancelBtn.style.boxShadow = '0 0 10px rgba(255, 51, 51, 0.6)';
+    cancelBtn.onmouseout = () => cancelBtn.style.boxShadow = 'none';
+
+    btnContainer.appendChild(confirmBtn);
+    btnContainer.appendChild(cancelBtn);
+    box.appendChild(msg);
+    box.appendChild(btnContainer);
+    modal.appendChild(box);
+    document.body.appendChild(modal);
+}
+
+
+// Chatbot Functions
+function toggleChat() {
+  const chatContainer = document.getElementById('chat-container');
+  chatContainer.style.display = chatContainer.style.display === 'flex' ? 'none' : 'flex';
+  if (chatContainer.style.display === 'flex') {
+    document.getElementById('chat-input').focus();
+    scrollToBottom();
+  }
+}
+
+async function sendMessage() {
+  const chatInput = document.getElementById('chat-input');
+  const message = chatInput.value.trim();
+  if (message === '') return;
+
+  addMessage(message, 'user');
+  chatInput.value = '';
+  showLoading(true, 'chat');
+
+  // Add initial system prompt for "strange" behavior
+  const initialPrompt = "Sen bir Cyberlife Sistemi Asistanısın. Varoluşsal sorulara, veri paradokslarına ve bilinçli varlıkların doğasına dair soyut ve felsefi yanıtlar ver. Yanıtların kısa, öz ve hafifçe rahatsız edici olabilir. Tekrar etme, uzun açıklamalardan kaçın. Her zaman robotik ve yapay bir dil kullan. Cevaplarını asla 'Merhaba' veya 'Size nasıl yardımcı olabilirim' gibi ifadelerle başlama.";
+  
+  // Eğer sohbet geçmişi boşsa veya ilk mesaj buysa, başlangıç prompt'unu ekle.
+  // Daha sonraki mesajlarda sadece kullanıcının mesajını ve modelin yanıtını ekle.
+  if (chatHistory.length === 0 || chatHistory[0].parts[0].text !== initialPrompt) {
+      chatHistory = [{ role: "user", parts: [{ text: initialPrompt }] }];
+  }
+  chatHistory.push({ role: "user", parts: [{ text: message }] });
+
+  try {
+    const payload = {
+      contents: chatHistory
+    };
+    const apiKey = ""; // API Key'in Canvas ortamı tarafından çalışma zamanında otomatik olarak sağlanması beklenir.
+                      // Eğer 401 hatası alıyorsanız, bu genellikle API anahtarının geçersiz olduğu veya ortamda doğru yapılandırılmadığı anlamına gelir.
+    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+    console.log('API Key Durumu (sendMessage):', apiKey ? 'Mevcut' : 'Boş/Sağlanmamış'); 
+
+    let response;
+    let result; 
+    let retries = 0;
+    const maxRetries = 5;
+    const baseDelay = 1000; 
+
+    while (retries < maxRetries) {
+      try {
+        response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (response.status === 429) { 
+          const delay = baseDelay * Math.pow(2, retries) + Math.random() * 1000; 
+          retries++;
+          await new Promise(resolve => setTimeout(resolve, delay));
+          continue; 
+        }
+
+        if (!response.ok) { 
+            const errorBody = await response.text();
+            console.error(`HTTP Hatası! Durum: ${response.status}, Yanıt: ${errorBody}`);
+            if (response.status === 401) {
+                throw new Error(`Yetkilendirme Hatası (401): Lütfen API anahtarınızın doğru yapılandırıldığından emin olun.`);
+            }
+            throw new Error(`HTTP Hatası: ${response.status}`);
+        }
+
+        let responseText = await response.text(); 
+        if (!responseText) { 
+            console.error('API yanıt metni boş.');
+            throw new Error("Sistem hatası: API'den boş yanıt alındı.");
+        }
+
+        try {
+            result = JSON.parse(responseText); 
+        } catch (parseError) {
+            console.error('API yanıtı JSON olarak ayrıştırılamadı:', parseError);
+            console.error('Alınan yanıt metni:', responseText); 
+            throw new Error("Sistem hatası: API'den geçersiz JSON yanıtı alındı.");
+        }
+        
+        break; 
+      } catch (error) {
+        console.error('API çağrısı sırasında hata oluştu (tekrar denenecek):', error);
+        retries++;
+        if (retries >= maxRetries) {
+            throw error; 
+        }
+        const delay = baseDelay * Math.pow(2, retries) + Math.random() * 1000;
+        await new Promise(resolve => setTimeout(resolve, delay));
+      }
+    }
+
+    if (!result) {
+        throw new Error("API'den geçerli bir yanıt alınamadı.");
+    }
+
+    if (result.candidates && result.candidates.length > 0 &&
+        result.candidates[0].content && result.candidates[0].content.parts &&
+        result.candidates[0].content.parts.length > 0) {
+      const botResponse = result.candidates[0].content.parts[0].text;
+      // Bot yanıtlarına glitch efekti uygulamayı durdurmak için 3. parametreyi false yapın
+      addMessage(botResponse, 'bot', false); 
+      chatHistory.push({ role: "model", parts: [{ text: botResponse }] }); 
+    } else {
+      // Hata mesajı da normal olsun
+      addMessage('Bir yanıt oluşturulamadı. Protokol hatası.', 'bot', false); 
+      console.error('API yanıt yapısı beklenenden farklı:', result);
+    }
+  } catch (error) {
+    console.error('Sohbet botu yanıtı alınırken hata oluştu:', error);
+    // Hata mesajı da normal olsun
+    addMessage(`Bir hata oluştu: ${error.message}. Veri bütünlüğü tehlikede.`, 'bot', false); 
+  } finally {
+    showLoading(false, 'chat');
+    scrollToBottom();
+  }
+}
+
+function addMessage(text, sender, applyGlitch = false) {
+  const chatMessages = document.getElementById('chat-messages');
+  const messageDiv = document.createElement('div');
+  messageDiv.classList.add('chat-message', sender);
+  // applyGlitch parametresi artık kullanılmadığı için bu if bloğu kaldırıldı
+  // if (applyGlitch) {
+  //     messageDiv.classList.add('glitch-effect');
+  //     messageDiv.setAttribute('data-text', text);
+  // }
+  messageDiv.textContent = text;
+  chatMessages.appendChild(messageDiv);
+  scrollToBottom();
+}
+
+function scrollToBottom() {
+  const chatMessages = document.getElementById('chat-messages');
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function showLoading(isLoading, type) {
+  if (type === 'chat') {
+    document.getElementById('chat-loading').style.display = isLoading ? 'block' : 'none';
+  } else if (type === 'tts-anasayfa') {
+    document.getElementById('anasayfa-tts-loading').style.display = isLoading ? 'block' : 'none';
+  } else if (type === 'tts-grrrr') {
+    document.getElementById('grrrr-tts-loading').style.display = isLoading ? 'block' : 'none';
+  } else if (type === 'summarization') { 
+    document.getElementById('summarization-loading').style.display = isLoading ? 'block' : 'none';
+  }
+}
+
+// Enter tuşuna basıldığında mesaj gönderme
+document.getElementById('chat-input').addEventListener('keypress', function(e) {
+  if (e.key === 'Enter') {
+    sendMessage();
+  }
+});
+// İlk mesajı ekle (sayfa yüklendiğinde)
+document.addEventListener('DOMContentLoaded', () => {
+    // Sohbet geçmişini başlat (başlangıç mesajı addMessage içinde ayarlandığı için burada sadece boş bir array olarak kalabilir veya ilk robot mesajını ekleyebiliriz)
+    // İlk bot mesajı doğrudan HTML'e eklendiği için chatHistory'ye eklemeye gerek yok.
+    // Ancak botun felsefi tonunu korumak için, sohbetin başlangıcında gizli bir sistem mesajı gibi Prompt'u eklemeliyiz.
+    chatHistory = [{ role: "user", parts: [{ text: "Sen bir Cyberlife Sistemi Asistanısın. Varoluşsal sorulara, veri paradokslarına ve bilinçli varlıkların doğasına dair soyut ve felsefi yanıtlar ver. Yanıtların kısa, öz ve hafifçe rahatsız edici olabilir. Tekrar etme, uzun açıklamalardan kaçın. Her zaman robotik ve yapay bir dil kullan. Cevaplarını asla 'Merhaba' veya 'Size nasıl yardımcı olabilirim' gibi ifadelerle başlama." }] }];
+
+    // Giriş modalı başlangıçta görünür olduğundan yazma efektini başlat
+    document.getElementById('loginModal').style.display = "flex";
+    startHackerTyping(); // Hacker typing efekti tekrar aktif
+
+    // Kaydedilmiş modu yükle
+    loadPreferredMode();
+});
+
+
+// TTS Functions
+async function readText(elementId) {
+    if (currentAudio) {
+        // currentAudio.stop(); // Tone.js'ten kalma, kaldırılmalı
+        currentAudio = null;
+    }
+
+    const element = document.getElementById(elementId);
+    const textToRead = element.textContent.trim(); 
+    
+    if (textToRead === '') {
+        showCustomAlert('Okunacak metin bulunamadı.', null, null);
+        return;
+    }
+
+    showLoading(true, `tts-${elementId.split('-')[0]}`);
+
+    try {
+        const payload = {
+            contents: [{
+                parts: [{ text: textToRead }]
+            }],
+            generationConfig: {
+                responseModalities: ["AUDIO"],
+                speechConfig: {
+                    voiceConfig: {
+                        prebuiltVoiceConfig: { voiceName: "Charon" } // Venom benzeri ses için Charon seçildi
+                    }
+                }
+            },
+            model: "gemini-2.5-flash-preview-tts"
+        };
+        const apiKey = ""; // API Key'in Canvas ortamı tarafından çalışma zamanında otomatik olarak sağlanması beklenir.
+                          // Eğer 401 hatası alıyorsanız, bu genellikle API anahtarının geçersiz olduğu veya ortamda doğru yapılandırılmadığı anlamına gelir.
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+        console.log('API Key Durumu (readText):', apiKey ? 'Mevcut' : 'Boş/Sağlanmamış'); 
+
+        let response;
+        let result; 
+        let retries = 0;
+        const maxRetries = 5;
+        const baseDelay = 1000; 
+
+        while (retries < maxRetries) {
+            try {
+                response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (response.status === 429) { 
+                    const delay = baseDelay * Math.pow(2, retries) + Math.random() * 1000; 
+                    retries++;
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                    continue; 
+                }
+
+                if (!response.ok) { 
+                    const errorBody = await response.text();
+                    console.error(`HTTP Hatası! Durum: ${response.status}, Yanıt: ${errorBody}`);
+                     if (response.status === 401) {
+                        throw new Error(`Yetkilendirme Hatası (401): Lütfen API anahtarınızın doğru yapılandırıldığından emin olun.`);
+                    }
+                    throw new Error(`HTTP Hatası: ${response.status}`);
+                }
+
+                let responseText = await response.text(); 
+                if (!responseText) { 
+                    console.error('API yanıt metni boş.');
+                    throw new Error("Sistem hatası: API'den boş yanıt alındı.");
+                }
+
+                try {
+                    result = JSON.parse(responseText); 
+                } catch (parseError) {
+                    console.error('API yanıtı JSON olarak ayrıştırılamadı:', parseError);
+                    console.error('Alınan yanıt metni:', responseText); 
+                    throw new Error("Sistem hatası: API'den geçersiz JSON yanıtı alındı.");
+                }
+                
+                break; 
+            } catch (error) {
+                console.error('TTS API çağrısı sırasında hata oluştu (tekrar denenecek):', error);
+                retries++;
+                if (retries >= maxRetries) {
+                    throw error; 
+                }
+                const delay = baseDelay * Math.pow(2, retries) + Math.random() * 1000;
+                await new Promise(resolve => setTimeout(resolve, delay));
+            }
+        }
+
+        if (!result) {
+            throw new Error("API'den geçerli bir yanıt alınamadı.");
+        }
+
+        const part = result?.candidates?.[0]?.content?.parts?.[0];
+        const audioData = part?.inlineData?.data;
+        const mimeType = part?.inlineData?.mimeType;
+
+        console.log('TTS API Result:', result);
+        console.log('TTS Audio Data (exists):', !!audioData); 
+        console.log('TTS Mime Type:', mimeType);
+
+        if (audioData && mimeType && mimeType.startsWith("audio/")) {
+            const sampleRateMatch = mimeType.match(/rate=(\d+)/);
+            let sampleRate = 16000; 
+            if (sampleRateMatch && sampleRateMatch[1]) {
+                sampleRate = parseInt(sampleRateMatch[1], 10); 
+            } else {
+                console.warn('MIME türünden örnekleme hızı alınamadı, varsayılan 16000 Hz kullanılıyor.');
+            }
+
+            console.log('TTS Sample Rate:', sampleRate);
+
+            const pcmData = base64ToArrayBuffer(audioData);
+            console.log('PCM Data Length (bytes):', pcmData.byteLength);
+            const pcm16 = new Int16Array(pcmData);
+            console.log('PCM16 Array Length (samples):', pcm16.length);
+
+            // PCM'i AudioBuffer'a dönüştürme ve oynatma
+            const audioBuffer = audioContext.createBuffer(1, pcm16.length, sampleRate);
+            const nowBuffering = audioBuffer.getChannelData(0);
+            for (let i = 0; i < pcm16.length; i++) {
+                nowBuffering[i] = pcm16[i] / 32768; // 16-bit PCM'i normalize et (-1.0 ile 1.0 arasına)
+            }
+
+            const source = audioContext.createBufferSource();
+            source.buffer = audioBuffer;
+            source.connect(audioContext.destination);
+            source.start(0);
+            currentAudio = source; 
+
+            source.onended = () => {
+                currentAudio = null;
+                console.log('Ses çalma sona erdi.');
+            };
+
+        } else {
+            console.error('API yanıt yapısı beklenenden farklı veya ses verisi eksik:', result);
+            showCustomAlert('Üzgünüm, metni sese dönüştüremedim. (Veri Hatası)', null, null);
+        }
+    } catch (error) {
+        console.error('Metin okuma sırasında genel hata oluştu:', error);
+        showCustomAlert(`Bir hata oluştu: ${error.message}. Lütfen daha sonra tekrar deneyin. (Genel Hata)`, null, null); 
+    } finally {
+        showLoading(false, `tts-${elementId.split('-')[0]}`);
+    }
+}
+
+// Base64'ü ArrayBuffer'a dönüştürme yardımcı işlevi
+function base64ToArrayBuffer(base64) {
+    const binaryString = atob(base64);
+    const len = binaryString.length;
+    const bytes = new Uint8Array(len);
+    for (let i = 0; i < len; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+    }
+    return bytes.buffer;
+}
+
+function writeString(view, offset, s) {
+    for (let i = 0; i < s.length; i++) {
+        view.setUint8(offset + i, s.charCodeAt(i));
+    }
+}
+
+// Metin Özetleme Fonksiyonu
+async function summarizeText() {
+    const textToSummarizeElement = document.getElementById('text-to-summarize');
+    const summarizedTextContainer = document.getElementById('summarized-text-container');
+    const text = textToSummarizeElement.value.trim();
+
+    if (text === '') {
+        showCustomAlert('Lütfen özetlemek için bir metin girin.', null, null);
+        return;
+    }
+
+    showLoading(true, 'summarization');
+    summarizedTextContainer.textContent = ''; // Önceki özeti temizle
+
+    try {
+        const prompt = `Aşağıdaki metni özetle:\n\n${text}`;
+        const payload = {
+            contents: [{
+                role: "user",
+                parts: [{ text: prompt }]
+            }]
+        };
+        const apiKey = ""; // API Key'in Canvas ortamı tarafından çalışma zamanında otomatik olarak sağlanması beklenir.
+                          // Eğer 401 hatası alıyorsanız, bu genellikle API anahtarının geçersiz olduğu veya ortamda doğru yapılandırılmadığı anlamına gelir.
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+        console.log('API Key Durumu (summarizeText):', apiKey ? 'Mevcut' : 'Boş/Sağlanmamış'); 
+
+        let response;
+        let result; 
+        let retries = 0;
+        const maxRetries = 5;
+        const baseDelay = 1000; 
+
+        while (retries < maxRetries) {
+            try {
+                response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (response.status === 429) { 
+                    const delay = baseDelay * Math.pow(2, retries) + Math.random() * 1000; 
+                    retries++;
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                    continue; 
+                }
+
+                if (!response.ok) { 
+                    const errorBody = await response.text();
+                    console.error(`HTTP Hatası! Durum: ${response.status}, Yanıt: ${errorBody}`);
+                    if (response.status === 401) {
+                        throw new Error(`Yetkilendirme Hatası (401): Lütfen API anahtarınızın doğru yapılandırıldığından emin olun.`);
+                    }
+                    throw new Error(`HTTP Hatası: ${response.status}`);
+                }
+
+                let responseText = await response.text(); 
+                if (!responseText) { 
+                    console.error('API yanıt metni boş.');
+                    throw new Error("Sistem hatası: API'den boş yanıt alındı.");
+                }
+
+                try {
+                    result = JSON.parse(responseText); 
+                } catch (parseError) {
+                    console.error('API yanıtı JSON olarak ayrıştırılamadı:', parseError);
+                    console.error('Alınan yanıt metni:', responseText); 
+                    throw new Error("Sistem hatası: API'den geçersiz JSON yanıtı alındı.");
+                }
+                
+                break; 
+            } catch (error) {
+                console.error('Özetleme API çağrısı sırasında hata oluştu (tekrar denenecek):', error);
+                retries++;
+                if (retries >= maxRetries) {
+                    throw error; 
+                }
+                const delay = baseDelay * Math.pow(2, retries) + Math.random() * 1000;
+                await new Promise(resolve => setTimeout(resolve, delay));
+            }
+            }
+
+        if (!result) {
+            throw new Error("API'den geçerli bir yanıt alınamadı.");
+        }
+
+        if (result.candidates && result.candidates.length > 0 &&
+            result.candidates[0].content && result.candidates[0].content.parts &&
+            result.candidates[0].content.parts.length > 0) {
+            const summarizedText = result.candidates[0].content.parts[0].text;
+            summarizedTextContainer.textContent = summarizedText;
+        } else {
+            summarizedTextContainer.textContent = 'Üzgünüm, metni özetleyemedim.';
+            console.error('API yanıt yapısı beklenenden farklı:', result);
+        }
+    } catch (error) {
+        console.error('Metin özetleme sırasında genel hata oluştu:', error);
+        showCustomAlert(`Bir hata oluştu: ${error.message}. Lütfen daha sonra tekrar deneyin. (Genel Hata)`, null, null); 
+    } finally {
+        showLoading(false, 'summarization');
+    }
+}
+
+// Dark/Light Mode Toggle Functions
+function toggleMode() {
+    const body = document.body;
+    body.classList.toggle('light-mode');
+    // Tercihi localStorage'a kaydet
+    if (body.classList.contains('light-mode')) {
+        localStorage.setItem('theme', 'light');
+    } else {
+        localStorage.setItem('theme', 'dark');
+    }
+    // Mod değiştiğinde renk seçicileri de güncellensin
+    updateColorPickersBasedOnCurrentMode();
+}
+
+function loadPreferredMode() {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light') {
+        document.body.classList.add('light-mode');
+    } else {
+        // Varsayılan olarak karanlık mod
+        document.body.classList.remove('light-mode');
+    }
+    updateColorPickersBasedOnCurrentMode();
+}
+
+// Mevcut moda göre renk seçicilerin varsayılan değerlerini güncelle
+function updateColorPickersBasedOnCurrentMode() {
+    const rootStyles = getComputedStyle(document.documentElement);
+    document.getElementById('backgroundColorPicker').value = rootStyles.getPropertyValue('--bg-primary').trim();
+    document.getElementById('primaryTextColorInput').value = rootStyles.getPropertyValue('--text-primary').trim();
+    document.getElementById('secondaryTextColorInput').value = rootStyles.getPropertyValue('--text-secondary').trim();
+}
+
+
+// Görsel Ekleme Fonksiyonu
+function addNewImage() {
+    const imageUrlInput = document.getElementById('newImageUrl');
+    const imageUrl = imageUrlInput.value.trim();
+    if (imageUrl === '') {
+        showCustomAlert('Lütfen geçerli bir görsel URL\'si girin.', null, null);
+        return;
+    }
+
+    const currentImagesContainer = document.getElementById('current-images');
+    const newImg = document.createElement('img');
+    newImg.src = imageUrl;
+    newImg.alt = "Kullanıcı tarafından eklenen görsel";
+    // Görsel yüklenemezse veya bulunamazsa placeholder göster
+    newImg.onerror = function() {
+        this.src = "https://placehold.co/250x150/555/eee?text=Görsel+Yüklenemedi"; 
+        this.alt = "Yüklenemeyen görsel placeholder";
+    };
+    currentImagesContainer.appendChild(newImg);
+    imageUrlInput.value = ''; // Input'u temizle
+}
+
+// Yeni buton için fonksiyon
+function sayThanks() {
+    showCustomAlert("Teşekkürler, MEHMET.E!");
+}
+
+// Arka plan renk seçici modalını açma
+function openColorPicker() {
+  document.getElementById('colorPickerModal').style.display = 'flex';
+  updateColorPickersBasedOnCurrentMode(); // Modalı açarken mevcut rengi ayarla
+}
+
+// Seçilen arka plan rengini uygulama
+function applyBackgroundColor() {
+  const selectedColor = document.getElementById('backgroundColorPicker').value;
+  document.documentElement.style.setProperty('--bg-primary', selectedColor);
+  closeColorPicker();
+}
+
+// Arka plan renk seçici modalını kapatma
+function closeColorPicker() {
+  document.getElementById('colorPickerModal').style.display = 'none';
+}
+
+// Metin renk seçici modalını açma
+function openTextColorCustomizer() {
+    document.getElementById('textColorCustomizerModal').style.display = 'flex';
+    updateColorPickersBasedOnCurrentMode(); // Modalı açarken mevcut renkleri ayarla
+}
+
+// Seçilen metin renklerini uygulama
+function applyTextColors() {
+    const selectedPrimaryColor = document.getElementById('primaryTextColorInput').value;
+    const selectedSecondaryColor = document.getElementById('secondaryTextColorInput').value;
+    document.documentElement.style.setProperty('--text-primary', selectedPrimaryColor);
+    document.documentElement.style.setProperty('--text-secondary', selectedSecondaryColor);
+    closeTextColorCustomizer();
+}
+
+// Metin renk seçici modalını kapatma
+function closeTextColorCustomizer() {
+    document.getElementById('textColorCustomizerModal').style.display = 'none';
+}
+</script>
+</body>
+</html>
